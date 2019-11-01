@@ -1,15 +1,20 @@
-// TOOD: Use an actual DB
-const users = {
-  'fake@email.com': {
-    email: 'fake@fake.com',
-    password: 'password123',
-    name: 'Mr Fake',
-  },
-};
+// TODO: Persistent storage
+const users = {};
 
 module.exports = {
   async findOne(email) {
     return users[email];
+  },
+
+  async all() {
+    return Object.keys(users).map(key => {
+      const user = users[key];
+      return {
+        email: user.email,
+        name: user.name,
+        role: user.role,
+      };
+    });
   },
 
   async create(user) {

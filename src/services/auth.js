@@ -1,6 +1,7 @@
 const argon2 = require('argon2');
 const { randomBytes } = require('crypto');
 const { secret } = require('../../config');
+const UserModel = require('../models/user');
 
 const jwt = require('jsonwebtoken');
 
@@ -8,7 +9,7 @@ module.exports = class AuthService {
   constructor() {}
 
   async Login(email, password) {
-    const userRecord = await UserModel.findOne({ email });
+    const userRecord = await UserModel.findOne(email);
     if (!userRecord) {
       throw new Error('User not found');
     } else {
@@ -42,7 +43,7 @@ module.exports = class AuthService {
     };
   }
 
-  async SignUp(email, password, name) {
+  async SignUp(email, password, name, role) {
     const salt = randomBytes(32);
     const passwordHashed = await argon2.hash(password, { salt });
 
@@ -51,6 +52,7 @@ module.exports = class AuthService {
       email,
       salt: salt.toString('hex'),
       name,
+      role: role || 'member',
     });
     const token = this.generateJWT(userRecord);
     return {

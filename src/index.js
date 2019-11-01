@@ -9,7 +9,6 @@ app.use(bodyParser.json());
 app.use('/', routes);
 app.get('/status', (req, res) => res.json({ status: 'OK' }));
 
-
 app.listen(portNo, async () => {
   console.log(`Listening at http://localhost:${portNo}.`);
 });

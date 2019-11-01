@@ -1,3 +1,4 @@
+const jwt = require('express-jwt');
 const { secret } = require('../../config');
 
 /**
@@ -12,11 +13,9 @@ const getTokenFromHeader = req => {
   }
 };
 
-module.exports = jwt = () => {
-  return {
-    secret,
-    // this is where the next middleware can find the encoded data generated in services/auth:generateJWT
-    userProperty: 'token',
-    getToken: getTokenFromHeader,
-  };
-};
+module.exports = jwt({
+  secret,
+  // this is where the next middleware can find the encoded data generated in services/auth:generateJWT
+  userProperty: 'token',
+  getToken: getTokenFromHeader,
+});
